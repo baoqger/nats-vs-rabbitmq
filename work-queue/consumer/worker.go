@@ -15,7 +15,7 @@ func main() {
 	nc, err := nats.Connect(nats.DefaultURL)
 	failOnError(err, "Failed to connect NATS server")
 
-	nc.Subscribe("task", func(msg *nats.Msg) {
+	nc.QueueSubscribe("task", "task_queue", func(msg *nats.Msg) {
 		log.Printf("Receive Task.")
 		dotCount := bytes.Count(msg.Data, []byte("."))
 		t := time.Duration(dotCount)
